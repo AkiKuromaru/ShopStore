@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <style>
+    
+    /* Add custom styles for the navigation bar and search bar */
+    .navbar {
+      background-color: #17a5ba67; /* Set the background color to blue */
+      color: #070707;
+      padding: 20px;
+      margin: 0;
+      position: relative;
+    }
+    .navbar .navbar-brand {
+      font-size: 30px; /* Increased font size */
+      font-weight: bold; /* Make the font bold */
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      color: #fff; /* Change text color to white for contrast */
+      text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5); /* Add text shadow */
+      padding: 10px; /* Add padding for better spacing */
+      background-color: rgba(23, 165, 186, 0.7); /* Add a semi-transparent background */
+      border-radius: 5px; /* Round the corners */
+}
+    .navbar a {
+      color: #060606;
+    }
+    .navbar .navbar-right {
+      padding-right: 20px;
+    }
+    .search-container {
+      float: left;
+      margin-left: 10px;
+    }
+    .search-container input[type="text"] {
+      padding: 6px;
+      border: none;
+      width: 200px;
+    }
+    .search-container button {
+      padding: 6px 10px;
+      background: #333;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+    }
+    /* Add custom styles for the main content */
+    .main-content {
+      padding: 20px;
+      text-align: center;
+    }
+    .add-to-cart-button {
+      padding: 10px 20px;
+      background-color: #17a5ba67;
+      color: #333; /* Change the text color back to black */
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .product-image {
+      width: 300px;
+      height: 300px;
+    }
+    .card {
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+    .card-title {
+      font-size: 18px;
+      font-weight: bold;
+    }
+    .card-text {
+      font-size: 16px;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  
+  <!-- Navigation bar -->
+  <nav class="navbar navbar-default">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <!-- Search bar on the left -->
+        <div class="search-container">
+          <form class="form-inline justify-content-center mb-4" method="get" action="/search">
+            <div class="form-group mx-sm-3">
+              <input type="text" name="q" class="form-control" placeholder="ค้นหา (ชื่อ)" value="">
+            </div>
+            <a href="javascript:window.history.back();" class="btn btn-primary">แสดงสินค้าทั้งหมด</a>
+
+          </form>
+        </div>
+        <!-- Store name in the center -->
+        <a class="navbar-brand" href="#">ItemStore</a>
+      </div>
+      <div class="navbar-right">
+        <div class="left-aligned-text">  
+          <form id="cart-form" action="/orders" method="get">
+            <h4><span>ยินดีต้อนรับลูกค้า</span></h4>
+            <a href="/" class="btn btn-success">Logout</a>
+            <button type="submit" class="btn btn-info" onclick="viewCart()">Shopping Cart <span id="cart-count">0</span></button>
+            <input type="hidden" name="productIDs" id="productIDs" value="">
+            <input type="hidden" name="quantity" id="quantity" value="1">
+          </form>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main content -->
+  <div class="container">
+    <div class="row">
+      <% for(var i=0; i < items.length; i++) { %>
+        <div class="col-md-4 mx-auto text-center">
+          <div class="card">
+            <div class="card-body">
+              <h3 class="card-title"><%= items[i].ProductName %></h3>
+              <h5 class="card-text"><%= items[i].ProductDetail %></h5>
+              <p class="card-text">ราคา : <%= items[i].ProductPrice %></p>
+              <p class="card-text">คงเหลือ: <%= items[i].Amount %></p>
+              <button class="add-to-cart-button" onclick="addToCart('<%= items[i].Product_ID %>', '<%= items[i].ProductName %>', '<%= items[i].ProductPrice %>');">Add to Cart</button>
+            </div>
+          </div>
+        </div>
+      <% } %>
+    </div>
+  </div>
+
+  <script>
+    var shoppingCart = [];
+
+    function addToCart(productId, productName, productPrice) {
+      var isItemInCart = false;
+      for (var i = 0; i < shoppingCart.length; i++) {
+        if (shoppingCart[i].productId === productId) {
+          isItemInCart = true;
+          break;
+        }
+      }
+
+      if (!isItemInCart) {
+        shoppingCart.push({
+          productId: productId,
+          productName: productName,
+          productPrice: productPrice
+        });
+
+        updateCartCount();
+        updateProductIDsInput();
+      }
+    }
+
+    function updateCartCount() {
+      var cartCount = document.getElementById('cart-count');
+      cartCount.textContent = shoppingCart.length;
+    }
+
+    function viewCart() {
+      console.log(shoppingCart);
+    }
+
+    function updateProductIDsInput() {
+      var productIDsInput = document.getElementById('productIDs');
+      var productIDsArray = shoppingCart.map(item => item.productId);
+      productIDsInput.value = productIDsArray.join(',');
+    }
+  </script>
+</body>
+</html>

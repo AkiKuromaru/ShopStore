@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirm Order</title>
+    <style>
+        body {
+            text-align: center; /* จัดข้อความอยู่ตรงกลาง */
+            background-color: #f2f2f2; /* พื้นหลังสีเทา */
+        }
+        .form-group {
+            background-color: #fff; /* พื้นหลังสีขาว */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* เพิ่มเงา */
+            margin: 20px auto; /* จัดกลางในหน้าเว็บ */
+            width: 80%; /* กำหนดความกว้าง */
+        }
+        .download-button {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            margin-top: 10px;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <h1>รายละเอียดการสั่งซื้อ</h1>
+    <div class="form-group">
+        <% payment.forEach(function(paymentItem) { %>
+            <form action="/recept" method="get"> <!-- ย้าย form มาที่นี่ -->
+                <p class="card-text">จัดส่งคุณ : <%= paymentItem.PayName %> </p>
+                <p class="card-text">ที่อยู่ในการจัดส่ง : <%= paymentItem.PayAddress %> </p>
+                <p class="card-text">เบอร์ติดต่อ: <%= paymentItem.PayTel %></p>
+
+                <input type="hidden" name="PayName" value="<%= paymentItem.PayName %>">
+                <input type="hidden" name="PayAddress" value="<%= paymentItem.PayAddress %>">
+                <input type="hidden" name="PaymentID" value="<%= paymentItem.PaymentID %>">
+                <input type="hidden" name="totalPrice" value="<%= paymentItem.totalPrice %>">
+            </form>
+        <% }); %>    
+    </div>
+</body>
+
+</html>

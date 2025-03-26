@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  
+  <style>
+    /* Custom styles for the navigation bar */
+    .navbar {
+      background-color: #0e78a0; /* Deepen the blue for more contrast */
+      color: white;
+      padding: 15px 0;
+      border: none;
+    }
+
+    .navbar a {
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    .navbar a:hover {
+      color: #f0f0f0;
+    }
+
+    .navbar .navbar-brand {
+      font-size: 20px;
+      padding-left: 15px;
+    }
+
+    .navbar-right {
+      padding-right: 20px;
+    }
+
+    .navbar .btn {
+      margin-left: 10px;
+      border-radius: 20px;
+    }
+
+    .btn-info {
+      background-color: #ff6347; /* Change button color */
+      border-color: #ff6347;
+    }
+
+    .btn-info:hover {
+      background-color: #ff4028;
+      border-color: #ff4028;
+    }
+
+    .btn-success {
+      background-color: #32cd32;
+      border-color: #32cd32;
+    }
+
+    .btn-success:hover {
+      background-color: #28a428;
+    }
+
+    /* Custom styles for main content */
+    .main-content {
+      padding: 20px;
+      text-align: center;
+    }
+
+    /* Custom styles for product cards */
+    .card {
+      border: 1px solid #e0e0e0;
+      border-radius: 10px;
+      padding: 15px;
+      margin: 15px 0;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+    }
+
+    .card:hover {
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    .product-image {
+      width: 100%;
+      max-width: 300px;
+      height: auto;
+      margin-bottom: 15px;
+    }
+
+    .card-title {
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .add-to-cart-button {
+      background-color: #17a5ba;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      transition: background-color 0.3s ease;
+    }
+
+    .add-to-cart-button:hover {
+      background-color: #148ca1;
+      color: white;
+    }
+
+    /* Grid system adjustments */
+    .col-md-4 {
+      margin-bottom: 30px;
+    }
+
+    /* Responsive search bar styling */
+    .search-container input[type="text"] {
+      padding: 6px;
+      border-radius: 20px;
+      width: 250px;
+      border: 1px solid #ccc;
+    }
+
+    .search-container button {
+      padding: 6px 12px;
+      border-radius: 20px;
+      background-color: #17a5ba;
+      color: white;
+      border: none;
+    }
+
+    .search-container button:hover {
+      background-color: #148ca1;
+    }
+
+    /* Media queries for responsiveness */
+    @media (max-width: 768px) {
+      .navbar-right {
+        float: none;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation bar -->
+  <nav class="navbar navbar-default">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <h4><a class="navbar-brand" href="/">Home</a></h4>
+      </div>
+      <div class="navbar-right">
+        <div class="left-aligned-text">  
+          <form id="cart-form" action="/orders" method="get">
+            <h4><span>ยินดีต้อนรับลูกค้า</span></h4>
+            <a href="/" class="btn btn-success">Logout</a>
+            <button type="submit" class="btn btn-info" onclick="viewCart()">Shopping Cart <span id="cart-count">0</span></button>
+            <input type="hidden" name="productIDs" id="productIDs" value="">
+            <input type="hidden" name="customerID" id="customerID" value="<%= customerID %>">
+            <input type="hidden" name="quantity" id="quantity" value="1">
+          </form>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container main-content">
+    <div class="row">
+      <% for(var i=0; i < items.length; i++) { %>
+        <div class="col-md-4 text-center">
+          <div class="card">
+            <h3 class="card-title"><%= items[i].ProductName %></h3>
+            <h5 class="card-title"><%= items[i].ProductDetail %></h5>
+            <p class="card-text">Price: <%= items[i].ProductPrice %></p>
+            <p class="card-text">Stock: <%= items[i].Amount %></p>
+            <button class="add-to-cart-button" onclick="addToCart('<%= items[i].Product_ID %>', '<%= items[i].ProductName %>', '<%= items[i].ProductPrice %>');">Add to Cart</button>
+          </div>
+        </div>
+      <% } %>
+    </div>
+  </div>
+
+  <script>
+    var shoppingCart = [];
+
+    function addToCart(productId, productName, productPrice) {
+      var isItemInCart = false;
+      for (var i = 0; i < shoppingCart.length; i++) {
+        if (shoppingCart[i].productId === productId) {
+          isItemInCart = true;
+          break;
+        }
+      }
+
+      if (!isItemInCart) {
+        shoppingCart.push({
+          productId: productId,
+          productName: productName,
+          productPrice: productPrice
+        });
+
+        updateCartCount();
+        updateProductIDsInput();
+      }
+    }
+
+    function updateCartCount() {
+      var cartCount = document.getElementById('cart-count');
+      cartCount.textContent = shoppingCart.length;
+    }
+
+    function viewCart() {
+      console.log(shoppingCart);
+    }
+
+    function updateProductIDsInput() {
+      var productIDsInput = document.getElementById('productIDs');
+      var productIDsArray = shoppingCart.map(item => item.productId);
+      productIDsInput.value = productIDsArray.join(',');
+    }
+  </script>
+</body>
+</html>

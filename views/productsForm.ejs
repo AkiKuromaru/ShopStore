@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <style>
+    /* ตั้งค่าพื้นหลังให้ครอบคลุมทั้งหน้าจอ */
+    body {
+        margin: 0;
+        padding: 0;
+        background-image: url("/images/bg2.jpg"); /* ปรับตามตำแหน่งของไฟล์ bg2.jpg */
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-color: rgba(255, 255, 255, 0.9); /* ทำให้โปร่งใส */
+      
+    }
+
+    .navbar {
+      background-color: rgba(23, 165, 186, 0.9); /* เพิ่มค่าความทึบ */
+      color: #070707;
+      padding: 20px;
+      position: relative;
+    }
+
+    .navbar .navbar-brand {
+      font-family: Arial, sans-serif;
+      font-size: 30px;
+      font-weight: bold;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      color: #fff;
+      text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+      padding: 10px;
+      background-color: rgba(23, 165, 186, 0.7);
+      border-radius: 5px;
+    }
+    .card {
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 20px;
+      background-color: rgba(255, 255, 255, 0.8); /* พื้นหลังโปร่งใส */
+    }
+
+    .card-title {
+      font-size: 18px;
+      font-weight: bold;
+    }
+    .navbar a {
+  color: #0004ff; /* Change this to your desired color, e.g., Tomato */
+    }
+
+    .navbar a:hover {
+  color: #ff0000; /* Optional: Add a hover effect */
+    }
+
+    
+    .card-text {
+      font-size: 16px;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <!-- แถบเมนู -->
+  <nav class="navbar navbar-default">
+    <div class="container-fluid">
+      <div class="navbar-header">
+      </div>
+      <!-- ชื่อร้านค้าอยู่กลาง -->
+      <a class="navbar-brand" href="#">ItemStore</a>
+      <!-- ลิงก์เมนู (ถ้ามี) -->
+      <ul class="nav navbar-nav e">
+        <h3><a href="/">Home</a></h3>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- เนื้อหาหลัก -->
+  <div class="container">
+    <div class="row">
+      <% for(var i=0; i < items.length; i++) { %>
+        <div class="col-md-4 mx-auto text-center">
+          <div class="card">
+            <div class="card-body">
+              <h3 class="card-title"><%= items[i].ProductName %></h3>
+              <h5 class="card-text"><%= items[i].ProductDetail %></h5>
+              <p class="card-text">ราคา : <%= items[i].ProductPrice %></p>
+              <p class="card-text">คงเหลือ: <%= items[i].Amount %></p>
+            
+            </div>
+          </div>
+        </div>
+      <% } %>
+    </div>
+  </div>
+</body>
+</html>

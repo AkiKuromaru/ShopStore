@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ใบเสร็จ</title>
+    <script>
+        function generateReceipt() {
+            fetch('/recept?PayName=JohnDoe&PaymentID=12345&PayAddress=Bangkok&TotalAll=5000')
+                .then(response => response.json()) // แปลง response เป็น JSON
+                .then(data => {
+                    alert(data.message); // แสดงข้อความ popup
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+    </script>
+</head>
+<body>
+    <button onclick="generateReceipt()">ออกใบเสร็จ</button>
+</body>
+</html>

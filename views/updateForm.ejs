@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <style>
+    /* Add custom styles for the navigation bar and search bar */
+    .navbar {
+      background-color: #17a5ba67; /* Set the background color to the same blue color as the background above main content */
+      color: #070707;
+      padding: 20px;
+      margin: 0; /* Add margin 0 to remove default margin */
+    }
+    .navbar a {
+      color: #060606;
+    }
+    .navbar .navbar-right {
+      float: right;
+      padding-right: 20px;
+    }
+ 
+  </style>
+  <style>
+    .left-aligned-text {
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation bar -->
+  <nav class="navbar navbar-default">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <h4><a class="navbar-brand" href="#">SHOPSTORE</a></h4>
+      </div>
+      <h4>
+        <ul class="nav navbar-nav">
+        </ul>
+      </h4>
+    </div>
+  </nav>
+  <!-- Main content -->
+  <div class="main-content">
+    <center>
+      <h1>แก้ไขรายการสินค้า</h1>
+      <div class="container edit-form">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>ชื่อสินค้า</th>
+              <th>ราคา</th>
+              <th>รายละเอียด</th>
+              <th>จำนวน</th>
+              <th>แก้ไข</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <form  action="/edit/<%=data.Product_ID%>" method="Post">
+                <td><input name="ProductName" value="<%=data.ProductName%>"></td> 
+                <td><input name="ProductPrice" value="<%=data.ProductPrice%>"></td> 
+                <td><input name="ProductDetail" value="<%=data.ProductDetail%>"></td> 
+                <td><input name="Amount" value="<%=data.Amount%>"></td> 
+                <td><button type="button" onclick="confirmEdit()">Edit</button></td>
+              </form>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </center>
+  </div>
+  <script>
+    // JavaScript function for confirmation before editing
+    function confirmEdit() {
+      var confirmed = confirm("คุณต้องการแก้ไขรายการสินค้าใช่ไหม?");
+      if (confirmed) {
+        document.querySelector('form').submit();
+      } else {
+      }
+    }
+  </script>
+</body>
+</html>
